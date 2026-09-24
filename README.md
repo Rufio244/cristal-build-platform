@@ -1,13 +1,19 @@
 # Cristal Build Platform
 
-Monorepo untuk platform build web AI berbasis Next.js + NestJS.
+Full-stack AI website builder with a Next.js client, Express + Prisma API, PostgreSQL, Docker Compose, seed data, authentication, dashboard, community feed, remix, and AI website generation.
 
-## Struktur utama
-- `client/` — frontend Next.js
-- `server/` — backend API dan AI Engine
-- `deployment/` — Docker, CI/CD, deployment config
+## Quick start
 
-## Tujuan
-- Membangun website builder dengan AI-assisted generation
-- Menyediakan community feed dan remix content
-- Integrasi billing, deployment, dan p2p storage
+```bash
+docker compose -f deployment/docker-compose.yml up --build
+```
+
+Open:
+- http://localhost:3000 — web app
+- http://localhost:5000/api/health — API health check
+
+Demo account:
+- `demo@cristal.page`
+- `demo123`
+
+See [RUNNING.md](RUNNING.md) for Docker and non-Docker setup.

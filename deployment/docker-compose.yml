@@ -5,8 +5,15 @@ services:
       POSTGRES_USER: cristal
       POSTGRES_PASSWORD: cristal
       POSTGRES_DB: cristal_build
-    ports: ["5432:5432"]
-    volumes: [cristal-postgres:/var/lib/postgresql/data]
+    ports:
+      - "5432:5432"
+    volumes:
+      - cristal-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cristal -d cristal_build"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
   server:
     build:
       context: ../server
@@ -14,15 +21,22 @@ services:
     environment:
       DATABASE_URL: postgresql://cristal:cristal@postgres:5432/cristal_build?schema=public
       PORT: 5000
-    ports: ["5000:5000"]
-    depends_on: [postgres]
+      CLIENT_URL: http://localhost:3000
+    command: sh -c "npx prisma migrate deploy && npm run prisma:seed && npm start"
+    ports:
+      - "5000:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
   client:
     build:
       context: ../client
       dockerfile: ../deployment/Dockerfile.client
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:5000
-    ports: ["3000:3000"]
-    depends_on: [server]
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
 volumes:
   cristal-postgres:
