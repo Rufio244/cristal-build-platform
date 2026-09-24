@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color: #171536; background: #f7f7fc; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; background: #f7f7fc; }
+button, input { font: inherit; }
+.cristal-bg { background: radial-gradient(circle at 15% 20%, #d8f8f2 0, transparent 28%), radial-gradient(circle at 84% 25%, #f7b9ed 0, transparent 31%), linear-gradient(120deg, #bfc6ff, #ffd1e8 48%, #a8eee7); }
+.mesh-bg { background: linear-gradient(135deg, #eff0ff 0%, #fff 42%, #f4ecff 100%); }
