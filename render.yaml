@@ -13,7 +13,7 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: CLIENT_URL
-        value: https://www.cristal-build.com
+        value: https://www.cristalbuild.com
   - type: web
     name: cristal-client
     env: node

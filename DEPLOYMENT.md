@@ -1,19 +1,19 @@
-# Deployment choices
+# Deployment with www.cristalbuild.com
 
-## Recommended: Render
+The repository contains a runnable local stack and a Render blueprint. To publish it, deploy `render.yaml` from Render, then configure the custom domain `www.cristalbuild.com` in the deployed client service.
 
-Use the root `render.yaml` blueprint. It creates a PostgreSQL database, API service, and client service. After deployment, add your custom domains in Render:
+Required DNS is supplied by your hosting provider. Usually:
 
-- Builder: `www.cristal-build.com`
-- Community: `www.cristal.com` (only if you own/control this domain)
-- API: `api.cristal-build.com`
+```text
+CNAME  www  <provider-hostname>
+```
 
-Update `NEXT_PUBLIC_API_URL` and `CLIENT_URL` to the final API and frontend URLs after Render assigns them.
+The exact target must be copied from the hosting dashboard. This repository cannot register the domain or change DNS records.
 
-## Frontend on Vercel
+For local use:
 
-Import the repository, set the root directory to `client`, and set `NEXT_PUBLIC_API_URL` to the deployed API URL. Add custom domains in Vercel. A domain such as `cristal-build.com` must be registered and controlled by you; DNS cannot be configured from this repository.
+```bash
+docker compose -f deployment/docker-compose.yml up --build
+```
 
-## Important
-
-`cristal=build.com` is not a valid domain because `=` is not allowed in DNS hostnames. Use `cristal-build.com` or another registered domain instead. `cristal.com` is also only usable if you own or administer it.
+Open `http://localhost:3000`. Do not put credentials in Git. Configure `DATABASE_URL`, `JWT_SECRET`, `CLIENT_URL`, `NEXT_PUBLIC_API_URL`, and optionally `OPENAI_API_KEY` as hosting secrets.
