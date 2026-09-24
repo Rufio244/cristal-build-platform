@@ -1,29 +1,22 @@
-# Run automatically with Docker
+# Cristal Builder — runnable setup
+
+## Start everything
 
 ```bash
 docker compose -f deployment/docker-compose.yml up --build
 ```
 
-The database is migrated and demo data is seeded automatically. Open `http://localhost:3000`.
+Open `http://localhost:3000`.
 
-Demo login: `demo@cristal.page` / `demo123`.
+- API health: `http://localhost:5000/api/health`
+- Demo email: `demo@cristal.page`
+- Demo password: `demo123`
 
-To stop and remove the database volume:
+The server waits for PostgreSQL through Compose health checks, applies Prisma migrations, and seeds the demo account automatically. The AI endpoint works in local fallback mode without a provider key; set `OPENAI_API_KEY` in the server environment to enable OpenAI generation.
+
+## Reset
 
 ```bash
 docker compose -f deployment/docker-compose.yml down -v
-```
-
-## Local development
-
-Copy `server/.env.example` to `server/.env`, start PostgreSQL, then run:
-
-```bash
-cd server && npm install && npx prisma generate && npx prisma migrate dev --name init && npm run prisma:seed && npm run dev
-```
-
-In a second terminal:
-
-```bash
-cd client && npm install && cp .env.example .env.local && npm run dev
+docker compose -f deployment/docker-compose.yml up --build
 ```
