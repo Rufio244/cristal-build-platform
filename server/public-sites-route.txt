@@ -1,0 +1,11 @@
+
+app.get('/api/public/sites/:subdomain', async (req, res) => {
+  try {
+    const website = await prisma.website.findUnique({ where: { subdomain: req.params.subdomain } });
+    if (!website || website.status !== 'PUBLISHED') return res.status(404).json({ error: 'ไม่พบเว็บไซต์ที่เผยแพร่แล้ว' });
+    await prisma.website.update({ where: { id: website.id }, data: { views: { increment: 1 } } });
+    res.json({ website });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
