@@ -1,22 +1,26 @@
-# Cristal Builder — runnable setup
+# Run Cristal Builder
 
-## Start everything
+## Automatic local startup
 
 ```bash
 docker compose -f deployment/docker-compose.yml up --build
 ```
 
-Open `http://localhost:3000`.
+Open `http://localhost:3000`. The API is available at `http://localhost:5000/api/health`.
 
-- API health: `http://localhost:5000/api/health`
-- Demo email: `demo@cristal.page`
-- Demo password: `demo123`
+The first startup automatically waits for PostgreSQL, applies Prisma migrations, seeds the demo account, and starts the API and Next.js client.
 
-The server waits for PostgreSQL through Compose health checks, applies Prisma migrations, and seeds the demo account automatically. The AI endpoint works in local fallback mode without a provider key; set `OPENAI_API_KEY` in the server environment to enable OpenAI generation.
+Demo account:
+- Email: `demo@cristal.page`
+- Password: `demo123`
 
-## Reset
+To reset the database:
 
 ```bash
 docker compose -f deployment/docker-compose.yml down -v
 docker compose -f deployment/docker-compose.yml up --build
 ```
+
+## Public deployment
+
+The repository includes `render.yaml` and `DEPLOYMENT.md` for deployment. A real public domain still requires ownership of `www.cristalbuild.com`, DNS access, and a hosting account. Do not commit secrets; configure `DATABASE_URL`, `JWT_SECRET`, `CLIENT_URL`, `NEXT_PUBLIC_API_URL`, and optional `OPENAI_API_KEY` in the hosting dashboard.
