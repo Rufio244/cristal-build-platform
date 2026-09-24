@@ -1,0 +1,56 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String          @id @default(uuid())
+  email         String          @unique
+  name          String
+  plan          String          @default("STARTER") // STARTER (199 THB), PRO (499 THB)
+  aiCredits     Int             @default(50)
+  websites      Website[]
+  posts         CommunityPost[]
+  createdAt     DateTime        @default(now())
+}
+
+model Website {
+  id            String          @id @default(uuid())
+  userId        String
+  user          User            @relation(fields: [userId], references: [id])
+  title         String          // เช่น CoffeeShop Landing, Designer Portfolio
+  subdomain     String          @unique // เช่น coffeebloom.cristal.page
+  status        String          @default("DRAFT") // DRAFT, PUBLISHED
+  views         Int             @default(0)
+  pages         Json            // โครงสร้างหลายหน้า (Multi-page JSON structure)
+  posts         CommunityPost[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model CommunityPost {
+  id            String          @id @default(uuid())
+  userId        String
+  user          User            @relation(fields: [userId], references: [id])
+  websiteId     String
+  website       Website          @relation(fields: [websiteId], references: [id])
+  caption       String          // ข้อความรีวิวหรือแนะนำเว็บ
+  tags          String[]        // เช่น ["DesignInspo", "WebDev"]
+  likesCount    Int             @default(0)
+  sharesCount   Int             @default(0)
+  comments      Comment[]
+  createdAt     DateTime        @default(now())
+}
+
+model Comment {
+  id            String          @id @default(uuid())
+  postId        String
+  post          CommunityPost   @relation(fields: [postId], references: [id])
+  userId        String
+  content       String
+  createdAt     DateTime        @default(now())
+}
