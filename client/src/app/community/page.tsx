@@ -1,3 +1,13 @@
+'use client';
+
+import { useState } from 'react';
+
+type Post = { id: string; author: string; time: string; caption: string; websiteTitle: string; tags: string[]; likes: number; comments: number; shares: number };
+
+const initialPosts: Post[] = [{ id: 'p1', author: 'Alex Chen', time: '2h ago', caption: 'Just found this amazing minimalist portfolio design — clean, modern and inspiring for my own site!', websiteTitle: 'Minimalist Portfolio Design 2024', tags: ['#DesignInspo', '#WebDev', '#UIUX'], likes: 124, comments: 18, shares: 5 }];
+
 export default function CommunityPage() {
-  return <main className="p-6">Community page</main>;
+  const [posts] = useState(initialPosts);
+
+  return <main className="min-h-screen bg-slate-950 p-8 text-white"><div className="mx-auto max-w-3xl"><h1 className="mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-3xl font-bold text-transparent">🌐 Cristal Community Feed</h1><div className="mb-6 rounded-2xl border border-slate-800 bg-slate-900 p-4 shadow-xl"><input type="text" placeholder="Share a website to the Cristal community..." className="mb-3 w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm focus:border-purple-500 focus:outline-none" /><div className="flex items-center justify-between"><div className="flex gap-2 text-xs text-slate-400"><span>🖼️ Photo</span><span>🔗 Website Link</span><span>📊 Poll</span></div><button className="rounded-lg bg-purple-600 px-4 py-1.5 text-sm font-semibold transition hover:bg-purple-500">Post to Feed</button></div></div>{posts.map((post) => <article key={post.id} className="mb-6 rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-xl"><div className="mb-3 flex items-center justify-between"><div><h4 className="font-semibold">{post.author}</h4><span className="text-xs text-slate-400">{post.time} • Public</span></div><button className="text-slate-400 hover:text-white" aria-label="More options">•••</button></div><p className="mb-4 text-sm text-slate-300">{post.caption}</p><div className="mb-4 flex items-center justify-between rounded-xl border border-slate-800 bg-slate-950 p-4"><div><span className="text-xs font-semibold uppercase tracking-wider text-purple-400">Featured Web</span><h5 className="mt-0.5 text-base font-bold">{post.websiteTitle}</h5></div><button className="rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-2 text-sm font-bold shadow-lg transition hover:from-purple-500 hover:to-indigo-500">⚡ Remix Web</button></div><div className="mb-4 flex gap-2">{post.tags.map((tag) => <span key={tag} className="rounded-md bg-purple-950/60 px-2.5 py-1 text-xs text-purple-300">{tag}</span>)}</div><div className="flex justify-between border-t border-slate-800 pt-3 text-sm text-slate-400"><span>❤️ {post.likes} likes</span><span>💬 {post.comments} comments</span><span>🔄 {post.shares} shares</span></div></article>)}</div></main>;
 }
